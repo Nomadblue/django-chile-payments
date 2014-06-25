@@ -31,7 +31,7 @@ Next, set `GETPAID_BACKENDS` with the webpay backend and add it to `INSTALLED_AP
 
 Now we are going to define the minimum parameters needed for development purposes.
 
-> See [the complete list of keys in the backend documentation](/viewdocs/webpay/) (`docs/webpay.md` in the source code).
+> See [the complete list of keys in the backend documentation](/django-chile-payments/webpay/).
 
     GETPAID_BACKENDS_SETTINGS = {
         'getpaid.backends.webpay': {
@@ -52,4 +52,4 @@ Run `./manage.py syncdb` in order to create additional database tables.
 
 ## Connect your project
 
-Ready to the next step? **Great**! Go ahead to [connect django-chile-payments with your project](/viewdocs/workflow) (`docs/workflow.md` in the source code).
+Ready to the next step? **Great**! Go ahead to [connect django-chile-payments with your project](/django-chile-payments/workflow).

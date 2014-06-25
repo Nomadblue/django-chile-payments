@@ -78,4 +78,4 @@ When the payment status changes from any non 'paid' to 'paid' status, this means
 
 ## Configure Webpay backend
 
-Ready to the next step? **Great**! Go ahead to [configure webpay backend](/viewdocs/webpay) (`docs/webpay.md` in the source code).
+Ready to the next step? **Great**! Go ahead to [configure webpay backend](/django-chile-payments/webpay).
