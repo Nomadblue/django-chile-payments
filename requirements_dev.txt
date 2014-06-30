@@ -1,0 +1,1 @@
+model-mommy==1.2
