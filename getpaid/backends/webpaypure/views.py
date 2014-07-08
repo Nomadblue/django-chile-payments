@@ -1,4 +1,6 @@
 # coding: utf-8
+
+from django.conf import settings
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
@@ -11,6 +13,7 @@ from . import PaymentProcessor
 @csrf_exempt
 def notify(request):
     return HttpResponse(PaymentProcessor.validate(request))
+
 
 @require_POST
 @csrf_exempt
@@ -34,7 +37,7 @@ def success(request):
 
     context = {'payment_items': order.items,
                'order': payment.order,
-               'site_url': 'http://www.rnovo.cl',
+               'site_url': settings.SITE_URL,
                'customer_name': order.customer_name,
                'order_id': order.pk,
                'payment_type': PAYMENT_TYPE_DESCRIPTIONS[params['TBK_TIPO_PAGO']],
@@ -43,7 +46,7 @@ def success(request):
                'transaction_date': payment.paid_on,
                'authorization_code': params['TBK_CODIGO_AUTORIZACION'],
                'amount': "{} ${}".format(payment.currency, int(payment.amount)),
-               'installments': params['TBK_NUMERO_CUOTAS'].zfill(2),}
+               'installments': params['TBK_NUMERO_CUOTAS'].zfill(2)}
     return render(request, 'getpaid/success.html', context)
 
 
