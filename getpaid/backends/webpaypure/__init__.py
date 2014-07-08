@@ -177,7 +177,10 @@ class PaymentProcessor(PaymentProcessorBase):
 
         params['TBK_MAC'] = hashlib.md5("&".join(starmap("{}={}".format, filter(lambda param: param[0] != 'TBK_MAC', params.items()))) + params['TBK_CODIGO_COMERCIO'] + 'webpay').hexdigest()  # :facepalm:
 
-        token_endpoint_url = 'https://certificacion.webpay.cl:6443/webpayserver/bp_validacion.cgi'  # change if certified!
+        if self.get_backend_setting('CERTIFIED', False):
+            token_endpoint_url = 'https://webpay.transbank.cl:443/cgi-bin/bp_validacion.cgi'
+        else:
+            token_endpoint_url = 'https://certificacion.webpay.cl:6443/webpayserver/bp_validacion.cgi'
 
         data = {'TBK_VERSION_KCC': '6.0',
                 'TBK_CODIGO_COMERCIO': params['TBK_CODIGO_COMERCIO'],
@@ -238,4 +241,10 @@ class PaymentProcessor(PaymentProcessorBase):
 
     def get_gateway_url(self, request):
         token = self.get_token()
-        return 'https://certificacion.webpay.cl:6443/filtroUnificado/bp_revision.cgi?TBK_VERSION_KCC=6.0&TBK_TOKEN={}'.format(token), "GET"  # TODO: change  url if certified!
+
+        if self.get_backend_setting('CERTIFIED', False):
+            gateway_url = 'https://webpay.transbank.cl:443/cgi-bin/bp_revision.cgi?TBK_VERSION_KCC=6.0&TBK_TOKEN={}'
+        else:
+            gateway_url = 'https://certificacion.webpay.cl:6443/filtroUnificado/bp_revision.cgi?TBK_VERSION_KCC=6.0&TBK_TOKEN={}'
+        
+        return gateway_url.format(token), "GET"
