@@ -4,7 +4,7 @@
 
 For now it only sports the *"peso pesado"* of online payments in Chile, an old folk well-known by local developers called [Webpay Plus](https://www.transbank.cl/public/pagina_producto_11.html) from **Transbank**. In the close future, we plan to include other APIs (e.g. [DineroMail](https://cl.dineromail.com/desarrolladores/biblioteca) or [Servipag](https://www.servipag.com/Portal-De-Pagos-En-Linea/Home/botondepago), eventually becoming a de-facto package for Django payment processing in Chile.
 
-Disclaimer: This work has been heavily based from a fork of [django-getpaid](https://github.com/cypreess/django-getpaid), which in turn borrowed a lot of great ideas from another project called **Mamona**.
+> Disclaimer: This work has been heavily based from a fork of [django-getpaid](https://github.com/cypreess/django-getpaid), which in turn borrowed a lot of great ideas from another project called **Mamona**.
 
 ## Installation
 

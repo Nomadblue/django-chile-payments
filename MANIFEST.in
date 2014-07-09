@@ -1,0 +1,4 @@
+include README.md
+include MIT-LICENSE.txt
+include MANIFEST.in
+recursive-include docs *
