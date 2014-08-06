@@ -76,6 +76,6 @@ Signals are also used to inform you that some particular payment just changed st
 
 When the payment status changes from any non 'paid' to 'paid' status, this means that all necessary amount was verified by your payment broker. You have access to your Order object at `instance.order`.
 
-## Configure Webpay backend
+## Configure payment backends
 
-Ready to the next step? **Great**! Go ahead to [configure webpay backend](/django-chile-payments/webpay).
+Ready to the next step? **Great**! Go ahead to [configure Webpay backend](/django-chile-payments/webpay) or [PayPal backend](/django-chile-payments/paypal).
