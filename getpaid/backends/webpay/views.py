@@ -2,7 +2,7 @@
 
 from django.conf import settings
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 from getpaid.models import Payment
@@ -68,7 +68,7 @@ def close(request):
 @csrf_exempt
 def success(request):
     payment_pk = request.POST['TBK_ID_SESION']
-    payment = Payment.objects.get(pk=payment_pk)
+    payment = get_object_or_404(Payment, pk=payment_pk, paid_on__isnull=False)
     order = payment.order
     params = payment.journalentry.params
 
