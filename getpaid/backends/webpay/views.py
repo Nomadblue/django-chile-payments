@@ -67,10 +67,10 @@ def close(request):
 @require_POST
 @csrf_exempt
 def success(request):
-    payment_pk = request.POST['TBK_ID_SESION']
+    payment_pk = request.POST.get('TBK_ID_SESION')
     try:
         payment = Payment.objects.get(pk=payment_pk, paid_on__isnull=False)
-    except Payment.DoesNotExist:
+    except (Payment.DoesNotExist, ValueError):
         return redirect('getpaid-webpay-failure')
     order = payment.order
     params = payment.journalentry.params
@@ -102,8 +102,7 @@ def success(request):
     return render(request, 'getpaid/success.html', context)
 
 
-@require_POST
 @csrf_exempt
 def failure(request):
-    context = {'order_id': request.POST['TBK_ORDEN_COMPRA']}
+    context = {'order_id': request.POST.get('TBK_ORDEN_COMPRA')}
     return render(request, 'getpaid/failure.html', context)
