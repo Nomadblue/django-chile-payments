@@ -5,8 +5,7 @@ from django.core.urlresolvers import reverse
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.template.response import TemplateResponse
-from django.views.generic import DetailView
-from django.views.generic.base import RedirectView, TemplateView
+from django.views.generic.base import RedirectView
 from django.views.generic.edit import FormView
 from getpaid.forms import PaymentMethodForm
 from getpaid.models import Payment
@@ -28,7 +27,6 @@ class NewPaymentView(FormView):
         raise Http404
 
     def form_valid(self, form):
-        from getpaid.models import Payment
         payment = Payment.create(form.cleaned_data['order'], form.cleaned_data['backend'])
         processor = payment.get_processor()(payment)
         gateway_url_tuple = processor.get_gateway_url(self.request)
@@ -42,9 +40,7 @@ class NewPaymentView(FormView):
             context['gateway_url'] = processor.get_gateway_url(self.request)[0]
             context['form'] = processor.get_form(gateway_url_tuple[2])
 
-            return TemplateResponse(request=self.request,
-                template=self.get_template_names(),
-                context=context)
+            return TemplateResponse(request=self.request, template=self.get_template_names(), context=context)
         else:
             raise ImproperlyConfigured()
 
