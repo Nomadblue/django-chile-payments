@@ -42,6 +42,14 @@ def close(request):
         else:
             return HttpResponse('ACEPTADO')
 
+    # Check if 'orden de compra' was already paid before
+    try:
+        payment = Payment.objects.get(pk=payment_pk, status='paid', backend='getpaid.backends.webpay')
+    except Payment.DoesNotExist:
+        pass
+    else:
+        return HttpResponse('RECHAZADO')
+
     try:
         payment = Payment.objects.get(pk=payment_pk,
                                       status='in_progress',
