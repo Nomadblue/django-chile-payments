@@ -42,12 +42,11 @@ def close(request):
         else:
             return HttpResponse('ACEPTADO')
 
-    # Check if 'orden de compra' was already paid before
-    try:
-        payment = Payment.objects.get(pk=payment_pk, status='paid', backend='getpaid.backends.webpay')
-    except Payment.DoesNotExist:
-        pass
-    else:
+    # Check if 'orden de compra' was already paid in another Payment before
+    order_id = int(request.POST['TBK_ORDEN_COMPRA'])
+    print "Orden de compra: %s" % order_id
+    previous_payments = Payment.objects.filter(order__id=order_id, status='paid', backend='getpaid.backends.webpay')
+    if previous_payments:
         return HttpResponse('RECHAZADO')
 
     try:
