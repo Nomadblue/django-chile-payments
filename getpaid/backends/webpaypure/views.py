@@ -21,7 +21,7 @@ def success(request):
     payment_pk = request.POST['TBK_ID_SESION']
     payment = Payment.objects.get(pk=payment_pk)
     order = payment.order
-    params = payment.journalentry.params
+    params = payment.journal_entry.params
 
     PAYMENT_TYPE_DESCRIPTIONS = {u'VN': u'Crédito',
                                  u'VC': u'Crédito',

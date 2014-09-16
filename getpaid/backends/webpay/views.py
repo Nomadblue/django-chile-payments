@@ -42,9 +42,9 @@ def close(request):
         else:
             return HttpResponse('ACEPTADO')
 
+    # AQUI SE VALIDA LA ORDEN DE COMPRA
     # Check if 'orden de compra' was already paid in another Payment before
     order_id = int(request.POST['TBK_ORDEN_COMPRA'])
-    print "Orden de compra: %s" % order_id
     previous_payments = Payment.objects.filter(order__id=order_id, status='paid', backend='getpaid.backends.webpay')
     if previous_payments:
         return HttpResponse('RECHAZADO')
@@ -60,6 +60,7 @@ def close(request):
             return HttpResponse('ACEPTADO')
 
     if (answer == u'0'):
+        # LLAMADA A METODO PARA VALIDAR MONTO Y MAC
         if PaymentProcessor.validate(payment, request):
             payment.on_success()
             return HttpResponse('ACEPTADO')

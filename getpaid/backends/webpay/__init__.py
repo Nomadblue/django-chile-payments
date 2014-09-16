@@ -228,6 +228,10 @@ class PaymentProcessor(PaymentProcessorBase):
         Returns:
             A bool.
         """
+
+        # ESTAS TRES LINEAS VERIFICAN QUE EL MONTO REGISTRADO AL INICIAR EL
+        # PROCESO DE COMPRA EN LA ORDEN (OBJETO 'payment') ES IGUAL AL RECIBIDO
+        # DESPUES DE PASAR POR TRANSBANK (EN EL PARAMETRO 'TBK_MONTO')
         amount = str(int(payment.amount)) + '00'
         tbk_amount = request.POST.get('TBK_MONTO', None)
         same_amount = amount == tbk_amount
@@ -237,6 +241,7 @@ class PaymentProcessor(PaymentProcessorBase):
         with open(temp_file, 'w') as params_file:
             params_file.write(urllib.unquote(request.body))
 
+        # EN ESTE 'WITH' SE HACE EL CHECK_MAC
         with webpay_run('tbk_check_mac.cgi', payment.pk, temp_file) as cgi:
             output, _ = cgi.communicate()
             os.close(temp_fd)
@@ -260,7 +265,7 @@ class PaymentProcessor(PaymentProcessorBase):
                       'TBK_ORDEN_COMPRA': order.pk,
                       'TBK_ID_SESION': self.payment.pk,
                       'TBK_URL_EXITO': base_url + reverse('getpaid-webpay-success'),
-                      'TBK_URL_FRACASO': base_url + reverse('getpaid-webpay-failure'),}
+                      'TBK_URL_FRACASO': base_url + reverse('getpaid-webpay-failure')}
 
         return reverse('getpaid-webpay-pago', kwargs={'pk': self.payment.pk}), "POST", tbk_params
 

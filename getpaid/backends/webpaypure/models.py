@@ -16,7 +16,7 @@ class LogEntry(models.Model):
     status = models.CharField(max_length=3)
     magic4 = models.CharField(max_length=20)
     message = models.TextField()
-    payment = models.ForeignKey('getpaid.Payment')
+    payment = models.ForeignKey('getpaid.Payment', related_name='log_entries')
 
     PROPERTIES = ('magic1', 'pid', 'magic2', 'action', 'magic3', 'date_str',
                   'time_str', 'ip', 'status', 'magic4', 'message')
@@ -63,7 +63,7 @@ class LogEntry(models.Model):
 class JournalEntry(models.Model):
     date = models.DateField()
     body = models.TextField()
-    payment = models.OneToOneField('getpaid.Payment')
+    payment = models.OneToOneField('getpaid.Payment', related_name='journal_entry')
 
     @property
     def params(self):
