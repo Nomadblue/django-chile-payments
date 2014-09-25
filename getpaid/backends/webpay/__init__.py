@@ -166,11 +166,12 @@ class PaymentProcessor(PaymentProcessorBase):
 
     @classmethod
     def get_tbk_config(cls, payment_pk, currency='CLP'):
+        domain = settings.get('SITE_DOMAIN', 'http://127.0.0.1:8000')
         conf = OrderedDict((('IDCOMERCIO', None),
                             ('MEDCOM', '1'),
                             ('TBK_KEY_ID', '101'),
                             ('PARAMVERIFCOM', '1'),
-                            ('URLCGICOM', reverse('getpaid-webpay-resultado', args=[payment_pk])),
+                            ('URLCGICOM', "%s%s" % (domain, reverse('getpaid-webpay-resultado', args=[payment_pk]))),
                             ('SERVERCOM', cls.get_backend_setting('STATIC_INBOUND_IP')),
                             ('PORTCOM', '80'),
                             ('WHITELISTCOM', 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz 0123456789./:=&?_'),
@@ -181,7 +182,7 @@ class PaymentProcessor(PaymentProcessorBase):
                             ('SERVERTRA', 'https://certificacion.webpay.cl'),
                             ('PORTTRA', '6443'),
                             ('PREFIJO_CONF_TR', 'HTML_'),
-                            ('HTML_TR_NORMAL', reverse('getpaid-webpay-close'))))
+                            ('HTML_TR_NORMAL', "%s%s" % (domain, reverse('getpaid-webpay-close')))))
 
         certified = cls.get_backend_setting('CERTIFIED', False)
         if certified:
