@@ -166,7 +166,7 @@ class PaymentProcessor(PaymentProcessorBase):
 
     @classmethod
     def get_tbk_config(cls, payment_pk, currency='CLP'):
-        domain = getattr(settings, 'SITE_DOMAIN', 'http://127.0.0.1:8000')
+        domain = getattr(settings, 'SITE_URL', 'http://127.0.0.1:8000')
         conf = OrderedDict((('IDCOMERCIO', None),
                             ('MEDCOM', '1'),
                             ('TBK_KEY_ID', '101'),
