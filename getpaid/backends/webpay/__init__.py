@@ -300,6 +300,8 @@ def webpay_run(name, payment_pk, *args, **kwargs):
         or there will be deadlocks.
     """
 
+    from pprint import pprint
+
     # prepare the configuration files
     assets_dir = PaymentProcessor.get_backend_setting('ASSETS_DIR')
     tbk_config = PaymentProcessor.get_tbk_config(payment_pk, 'CLP')  # FIXME
@@ -313,6 +315,8 @@ def webpay_run(name, payment_pk, *args, **kwargs):
 
     os.mkdir(datos_path)
     with open(os.path.join(datos_path, 'tbk_config.dat'), 'w') as f:
+        pprint("TBK_CONFIG: %s" % tbk_config)
+        pprint('------------------------------------------')
         f.write(tbk_config)
     with open(os.path.join(datos_path, 'tbk_param.txt'), 'w') as f:
         f.write(tbk_param)
@@ -348,19 +352,23 @@ def webpay_run(name, payment_pk, *args, **kwargs):
         for event_log in glob.glob(os.path.join(log_path, 'TBK_EVN*')):
             with open(event_log, 'r') as f:
                 for line in map(str.strip, f.readlines()):
+                    pprint("TBK_ENV: %s" % line)
                     from models import LogEntry
 
                     entry = LogEntry.from_line(line=line, payment=payment)
                     entry.save()
+                pprint('------------------------------------------')
 
         for journal_log in glob.glob(os.path.join(log_path, 'tbk_bitacora_TR_NORMAL*')):
             st = os.stat(journal_log)
             date = datetime.date.fromtimestamp(st.st_mtime)
             with open(journal_log, 'r') as f:
                 for line in map(str.strip, f.readlines()):
+                    pprint("TBK_BITACORA: %s" % line)
                     from models import JournalEntry
                     entry = JournalEntry(date=date, body=line, payment=payment)
                     entry.save()
+                pprint('------------------------------------------')
     except Payment.DoesNotExist:
         pass
 
