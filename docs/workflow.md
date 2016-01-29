@@ -29,7 +29,7 @@ Let's create a minimal model for our explanation purposes:
 
     class OrderItem(models.Model):
         name = models.CharField(max_length = 100)
-        order = models.ForeignKey(Order, related_name="items")
+        order = models.ForeignKey(Order, related_name='items')
         total = models.DecimalField(max_digits=6, decimal_places=2)
 
 
