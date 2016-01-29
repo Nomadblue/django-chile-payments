@@ -13,6 +13,7 @@ Let's create a minimal model for our explanation purposes:
 
     class Order(models.Model):
         name = models.CharField(max_length=255)
+        customer_name = models.CharField(max_length=70)
         paid = models.BooleanField(default=False)
 
         def __unicode__(self):
@@ -24,6 +25,13 @@ Let's create a minimal model for our explanation purposes:
         @property
         def total(self):
             return 1000
+
+
+    class OrderItem(models.Model):
+        name = models.CharField(max_length = 100)
+        order = models.ForeignKey(Order, related_name="items")
+        total = models.DecimalField(max_digits=6, decimal_places=2)
+
 
     getpaid.register_to_payment(Order, unique=False, related_name='payments')
 
