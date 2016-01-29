@@ -63,7 +63,7 @@ class LogEntry(models.Model):
 class JournalEntry(models.Model):
     date = models.DateField()
     body = models.TextField()
-    payment = models.OneToOneField('getpaid.Payment')
+    payment = models.ForeignKey('getpaid.Payment')
 
     @property
     def params(self):
