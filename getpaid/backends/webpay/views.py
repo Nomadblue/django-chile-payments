@@ -81,7 +81,7 @@ def success(request):
     except (Payment.DoesNotExist, ValueError):
         return redirect('getpaid-webpay-failure')
     order = payment.order
-    params = payment.journalentry.params
+    params = payment.journalentry_set.latest('date').params
 
     PAYMENT_TYPE_DESCRIPTIONS = {u'VN': u'Crédito',
                                  u'VC': u'Crédito',
